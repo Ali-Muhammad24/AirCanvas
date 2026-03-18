@@ -48,7 +48,7 @@ AirCanvas is an AI-powered virtual drawing application that allows users to draw
 
 1. **Clone the repository:**
    ```bash
-   git clone [https://github.com/Ali-Muhammad24/AirCanvas.git](https://github.com/Ali-Muhammad24/AirCanvas.git)
+   git clone https://github.com/Ali-Muhammad24/AirCanvas.git
 
 2. **Install Dependencies:**
    pip install opencv-python mediapipe numpy
