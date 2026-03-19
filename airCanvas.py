@@ -190,6 +190,11 @@ while True:
                     last_clear_time = current_time
                     
             # Detect color selection
+            on_color_bar = (                                                # if the index finger is on the color bar area
+                toolbar_left < index_x < toolbar_left + toolbar_width and
+                toolbar_top < index_y < toolbar_top + toolbar_height
+            )
+            
             for i,(cx,cy) in enumerate(circle_positions):
                 distance = ((index_x-cx)**2 + (index_y-cy)**2)**0.5         # Calculate the distance between the fingertip and the center of each color circle
 
@@ -197,6 +202,11 @@ while True:
                     draw_color = colors[i]                                  # if finger is touching that color circle then set the draw_color to that color
                     
             # Detect thickness selection
+            on_thickness_bar = (                                            # if the index finger is on the thickness bar area
+                thick_left < index_x < thick_left + thick_width and
+                thick_top < index_y < thick_top + thick_height
+            )
+            
             for i,(cx,cy) in enumerate(thickness_positions):
                 distance = ((index_x-cx)**2 + (index_y-cy)**2)**0.5         
 
@@ -208,7 +218,10 @@ while True:
             is_drawing = index_up and fingers_up == 1
             
             # For Eraser
-            is_erasing = index_up and middle_up and fingers_up == 2 
+            is_erasing = index_up and middle_up and fingers_up == 2
+            
+            # to prevent drawing on the ui elements (color bar, thickeness bar, clear button)
+            on_ui = on_clear_button or on_color_bar or on_thickness_bar 
                         
             '''
             Create vectors from wrist to index/pinky bases and use their Cross Product to find the 'Normal' (perpendicular) vector. If the z-component of this normal 
@@ -251,7 +264,7 @@ while True:
 
             # ------------- Drawing and Erasing Logic -----------
             # only draw or erase if the palm is facing the camera and finger isnt on the clear button and not all fingers are up 
-            if palm_facing and not on_clear_button and fingers_up != 4:
+            if palm_facing and not on_ui and fingers_up != 4:
                 # ERASER MODE (priority)
                 if is_erasing:
                     if prev_x == 0 and prev_y == 0:                 
